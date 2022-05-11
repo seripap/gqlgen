@@ -46,7 +46,11 @@ var page = template.Must(template.New("graphiql").Parse(`<!DOCTYPE html>
       const subscriptionUrl = wsProto + '//' + location.host + {{.endpoint}};
 {{- end}}
 
-      const fetcher = GraphiQL.createFetcher({ url, subscriptionUrl });
+			const queryString = window.location.search;
+			const urlParams = new URLSearchParams(queryString);
+			const key = urlParams.get('key')
+
+			const fetcher = GraphiQL.createFetcher({ url + key ? '?key=' + key : '', subscriptionUrl });
       ReactDOM.render(
         React.createElement(GraphiQL, {
           fetcher: fetcher,
